@@ -6,7 +6,7 @@
 /*   By: jgamarra <jgamarra@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/16 22:34:18 by jgamarra          #+#    #+#             */
-/*   Updated: 2024/10/20 18:59:07 by jgamarra         ###   ########.fr       */
+/*   Updated: 2024/10/20 20:25:33 by jgamarra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,8 @@ void	handle_signal(int signal, siginfo_t *siginfo, void *context)
 		bit_idx = 0;
 		character = 0;
 	}
-	kill(siginfo->si_pid, SIGUSR1);
+	if (kill(siginfo->si_pid, SIGUSR1) == -1)
+		ft_exit_message("ERROR - signal", EXIT_FAILURE);
 }
 
 int	main(void)
