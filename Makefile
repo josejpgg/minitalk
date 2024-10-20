@@ -9,34 +9,36 @@ COMPILE := ${SOURCE:.c=.o}
 SOURCE_BONUS := mt_client_bonus.c mt_server_bonus.c
 COMPILE_BONUS := ${SOURCE_BONUS:.c=.o}
 
-all: lib client server
+all: client server
 
 %.o: %.c
 	cc $(FLAGS) -c $< -o $@
 
 client: $(COMPILE)
-	cc mt_client.o $(LIBFT_NAME) -o $@
-
-server: $(COMPILE)
-	cc mt_server.o $(LIBFT_NAME) -o $@
-
-bonus: lib $(COMPILE_BONUS)
-	cc mt_client_bonus.o $(LIBFT_NAME) -o client
-	cc mt_server_bonus.o $(LIBFT_NAME) -o server
-
-lib:
 	@make -C $(LIBFT_PATH)
 	@mv $(LIBFT_PATH)/$(LIBFT_NAME) .
+	cc $(FLAGS) mt_client.o $(LIBFT_NAME) -o $@
+
+server: $(COMPILE)
+	@make -C $(LIBFT_PATH)
+	@mv $(LIBFT_PATH)/$(LIBFT_NAME) .
+	cc $(FLAGS) mt_server.o $(LIBFT_NAME) -o $@
+
+bonus: $(COMPILE_BONUS)
+	@make -C $(LIBFT_PATH)
+	@mv $(LIBFT_PATH)/$(LIBFT_NAME) .
+	cc $(FLAGS) mt_client_bonus.o $(LIBFT_NAME) -o client
+	cc $(FLAGS) mt_server_bonus.o $(LIBFT_NAME) -o server
 
 clean:
 	@rm -rf $(COMPILE)
 	@rm -rf $(COMPILE_BONUS)
-	@make clean -C $(LIBFT_PATH)
+	@make clean -C $(LIBFT_PATH) -s
 
 fclean:
 	@rm -rf $(LIBFT_NAME)
 	@rm -rf client server
-	@make fclean -C $(LIBFT_PATH)
+	@make fclean -C $(LIBFT_PATH) -s
 
 re: fclean clean lib all
 

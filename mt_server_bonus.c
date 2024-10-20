@@ -3,24 +3,24 @@
 /*                                                        :::      ::::::::   */
 /*   mt_server_bonus.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jgamarra <jgamarra@student.42madrid.com>   +#+  +:+       +#+        */
+/*   By: jgamarra <jgamarra@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/16 22:34:18 by jgamarra          #+#    #+#             */
-/*   Updated: 2024/10/20 14:39:54 by jgamarra         ###   ########.fr       */
+/*   Updated: 2024/10/20 18:59:07 by jgamarra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minitalk.h"
 
-void	handle_signal(int signal, siginfo_t *siginfo)
+void	handle_signal(int signal, siginfo_t *siginfo, void *context)
 {
 	static int	bit_idx;
 	static int	character;
 
+	(void)context;
 	if (signal == SIGUSR1)
 	{
 		character |= 1 << (7 - bit_idx);
-		kill(siginfo->si_pid, SIGUSR1);
 	}
 	bit_idx++;
 	if (bit_idx == 8)
@@ -29,6 +29,7 @@ void	handle_signal(int signal, siginfo_t *siginfo)
 		bit_idx = 0;
 		character = 0;
 	}
+	kill(siginfo->si_pid, SIGUSR1);
 }
 
 int	main(void)
@@ -36,7 +37,7 @@ int	main(void)
 	struct sigaction	sa;
 
 	sigemptyset(&sa.sa_mask);
-	sa.sa_handler = handle_signal;
+	sa.sa_sigaction = handle_signal;
 	if (sigaction(SIGUSR1, &sa, NULL) == -1)
 		ft_exit_message("ERROR", EXIT_FAILURE);
 	if (sigaction(SIGUSR2, &sa, NULL) == -1)
