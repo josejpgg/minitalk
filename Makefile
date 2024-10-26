@@ -1,9 +1,10 @@
 LIBFT_NAME := libft.a
 LIBFT_GH := https://github.com/josejpgg/libft_increment.git
 LIBFT_PATH := ./lib/libft/
+CC = cc
 FLAGS = 
-FLAGS = -Wall -Werror -Wextra
-# FLAGS = -Wall -Werror -Wextra -fsanitize=address -g
+# FLAGS = -Wall -Werror -Wextra
+FLAGS = -Wall -Werror -Wextra -fsanitize=address -g
 SOURCE := mt_client.c mt_server.c
 COMPILE := ${SOURCE:.c=.o}
 SOURCE_BONUS := mt_client_bonus.c mt_server_bonus.c
@@ -12,24 +13,23 @@ COMPILE_BONUS := ${SOURCE_BONUS:.c=.o}
 all: client server
 
 %.o: %.c
-	cc $(FLAGS) -c $< -o $@
+	$(CC) $(FLAGS) -c $< -o $@
 
 client: $(COMPILE)
 	@make -C $(LIBFT_PATH)
 	@mv $(LIBFT_PATH)/$(LIBFT_NAME) .
-	cc $(FLAGS) mt_client.o $(LIBFT_NAME) -o $@
+	$(CC) $(FLAGS) mt_client.o $(LIBFT_NAME) -o $@
 
 server: $(COMPILE)
 	@make -C $(LIBFT_PATH)
 	@mv $(LIBFT_PATH)/$(LIBFT_NAME) .
-	cc $(FLAGS) mt_server.o $(LIBFT_NAME) -o $@
-	./server
+	$(CC) $(FLAGS) mt_server.o $(LIBFT_NAME) -o $@
 
 bonus: $(COMPILE_BONUS)
 	@make -C $(LIBFT_PATH)
 	@mv $(LIBFT_PATH)/$(LIBFT_NAME) .
-	cc $(FLAGS) mt_client_bonus.o $(LIBFT_NAME) -o client
-	cc $(FLAGS) mt_server_bonus.o $(LIBFT_NAME) -o server
+	$(CC) $(FLAGS) mt_client_bonus.o $(LIBFT_NAME) -o client
+	$(CC) $(FLAGS) mt_server_bonus.o $(LIBFT_NAME) -o server
 
 clean:
 	@rm -rf $(COMPILE)
@@ -41,7 +41,7 @@ fclean:
 	@rm -rf client server
 	@make fclean -C $(LIBFT_PATH) -s
 
-re: fclean clean lib all
+re: fclean clean all
 
 libft:
 	@if [ ! -d "./lib" ]; then \
@@ -59,4 +59,4 @@ leaksMac:
 leaksCampus:
 	valgrind --leak-check=yes ./client 85510 "99 0 25 -38 10 7 42"
 
-.PHONY: all clean fclean re lib libft leaksMac leaksCampus
+.PHONY: all clean fclean re
