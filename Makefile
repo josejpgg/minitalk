@@ -3,8 +3,8 @@ LIBFT_GH := https://github.com/josejpgg/libft_increment.git
 LIBFT_PATH := ./lib/libft/
 CC = cc
 FLAGS = 
-# FLAGS = -Wall -Werror -Wextra
-FLAGS = -Wall -Werror -Wextra -fsanitize=address -g
+FLAGS = -Wall -Werror -Wextra
+# FLAGS = -Wall -Werror -Wextra -fsanitize=address -g
 SOURCE := mt_client.c mt_server.c
 COMPILE := ${SOURCE:.c=.o}
 SOURCE_BONUS := mt_client_bonus.c mt_server_bonus.c
@@ -57,6 +57,6 @@ leaksMac:
 	leaks --atExit --list -- ./client 85510 "99 0 25 -38 10 7 42"
 
 leaksCampus:
-	valgrind --leak-check=yes ./client 85510 "99 0 25 -38 10 7 42"
+	valgrind --leak-check=yes ./client 500502 "assdadasd"
 
 .PHONY: all clean fclean re

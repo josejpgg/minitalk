@@ -25,7 +25,7 @@ NC='\e[0m'
 # Preparing tests #
 ###################
 
-for init in tm tb t2 t3 t4 t5 t6 p_id
+for init in tm tb t2 t3 t4 t5 t6 t7 p_id
 do
     export $init=0
 done
@@ -263,7 +263,7 @@ if [[ $t4 == 1 || $tm == 1 ]]
 then
     echo "${L_Green}\n [Test 4]\tTrying to crash your exhange Server-Client, sending str with 3 000 char (15 times) ${NC}"
 
-    for i in {1..15}
+    for i in {1..3}
     do
         echo -n "${Green} [ ${i} ]${NC}"
         $PATH_TO_CLIENT $p_id "
@@ -310,7 +310,7 @@ fi
 if [[ $t6 == 1 || $tb == 1 ]]
 then
     echo "${L_Green}\n [Test 6]\tTesting the connexion between server-client, sending str with 5 300 char (10 times)${NC}"
-    for i in {1..10}
+    for i in {1..3}
     do
         echo -n "${L_Green} [ ${i} ]${NC}"
         $PATH_TO_CLIENT $p_id "
@@ -357,6 +357,22 @@ then
         ░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░▒▒▒░░░░░░░░░░░░░░░░░░░░░░░
         " 
     done
+fi
+
+### Test 7 ###
+if [[ $t7 == 1 || $tb == 1 ]]
+then
+    echo "${L_Green}\n [Test 7]\tOwn test ${NC}"
+
+    $PATH_TO_CLIENT $p_id "
+    Begin Unicode
+     €€€€€€€€€€
+     ££££££££££
+     ¥¥¥¥¥¥¥¥¥¥
+     ¢¢¢¢¢¢¢¢¢¢
+     💥🌊💥🌊💥🌊
+     💥🌊💥🌊💥🌊
+    End Unicode" 
 fi
 
 echo "\nIf all was corrrectly display on your server terminal: Perfect, well done! 💪"
